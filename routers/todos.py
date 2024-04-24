@@ -52,7 +52,7 @@ def delete_todo(id: int, db: Session = Depends(get_db)):
 langchain_llm = OpenAI(temperature=0)
 
 summarize_template_string = """
-        Provide a summary for the following text:
+        Haz un resumen del siguiente texto:
         {text}
 """
 
@@ -72,7 +72,7 @@ async def summarize_text(text: str):
     return {'summary': summary}
 
 write_poem_template_string = """
-        Write a short poem with the following text:
+        Actúa como un poeta profesional y escribe un poema sobre este:
         {text}
 """
 
@@ -93,4 +93,29 @@ async def get_todo_by_id(id: int, db: Session = Depends(get_db)):
         raise HTTPException(status_code=404, detail="to do not found")
     poem = write_poem_chain.run(text=todo.name)
     return {'poem': poem}
+
+# Definir un prompt template para generar posts de Instagram
+instagram_post_template_string = """
+    Como un community manager creativo y profesional especializado en Instagram,
+    redacta un post en español que sea atractivo y original, que incluya hashtags basado en este input:
+    {text}
+"""
+
+instagram_post_prompt = PromptTemplate(
+    template=instagram_post_template_string,
+    input_variables=['text'],
+)
+
+instagram_post_chain = LLMChain(
+    llm=langchain_llm,
+    prompt=instagram_post_prompt,
+)
+
+@router.post("/write-instagram-post/{id}")
+async def write_instagram_post(id: int, db: Session = Depends(get_db)):
+    todo = crud.read_todo(db, id)
+    if todo is None:
+        raise HTTPException(status_code=404, detail="to do not found")
+    instagram_post = instagram_post_chain.run(text=todo.name)
+    return {'instagram_post': instagram_post}
 
