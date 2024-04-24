@@ -17,18 +17,18 @@ app = FastAPI()
 app.include_router(todos.router)
 
 
-#origins = [
-#    "http://localhost:3000",
-#    "https://todo-frontend-khaki.vercel.app/",
-#]
+origins = [
+    "http://localhost:3000",  # URL local para desarrollo
+    "https://llm-fastapi-vercel-frontend-hhqkcajwi-isabelgonz91s-projects.vercel.app",  # URL de producción
+]
 
-# CORS configuration, needed for frontend development
+# Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=origins,  # Usar la lista de orígenes permitidos
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["*"],  # Permite todos los métodos
+    allow_headers=["*"],  # Permite todos los encabezados
 )
 
 
