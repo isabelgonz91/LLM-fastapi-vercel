@@ -70,3 +70,27 @@ summarize_chain = LLMChain(
 async def summarize_text(text: str):
     summary = summarize_chain.run(text=text)
     return {'summary': summary}
+
+write_poem_template_string = """
+        Write a short poem with the following text:
+        {text}
+"""
+
+write_poem_prompt = PromptTemplate(
+    template=write_poem_template_string,
+    input_variables=['text'],
+)
+
+write_poem_chain = LLMChain(
+    llm=langchain_llm,
+    prompt=write_poem_prompt,
+)
+
+@router.post("/write-poem/{id}")
+async def get_todo_by_id(id: int, db: Session = Depends(get_db)):
+    todo = crud.read_todo(db, id)
+    if todo is None:
+        raise HTTPException(status_code=404, detail="to do not found")
+    poem = write_poem_chain.run(text=todo.name)
+    return {'poem': poem}
+
