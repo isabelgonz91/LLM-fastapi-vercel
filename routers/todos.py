@@ -10,6 +10,13 @@ from langchain.chains import LLMChain
 router = APIRouter(
     prefix="/todos"
 )
+@router.get("/favicon.ico")
+def get_favicon():
+    return Response(status_code=status.HTTP_204_NO_CONTENT)
+@router.head("/")
+def head_root():
+    # No necesitas devolver un cuerpo en la respuesta, solo un objeto Response vacío
+    return Response()
 
 def get_db():
     db = SessionLocal()
@@ -87,10 +94,11 @@ write_poem_chain = LLMChain(
 )
 
 @router.post("/write-poem/{id}")
-async def get_todo_by_id(id: int, db: Session = Depends(get_db)):
+async def write_poem_for_todo_id(id: int, db: Session = Depends(get_db)):
     todo = crud.read_todo(db, id)
     if todo is None:
         raise HTTPException(status_code=404, detail="to do not found")
     poem = write_poem_chain.run(text=todo.name)
     return {'poem': poem}
+
 
