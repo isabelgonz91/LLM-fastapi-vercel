@@ -18,17 +18,15 @@ app.include_router(todos.router)
 
 
 origins = [
-    "http://localhost:3000",
-    "https://llm-fastapi-vercel-frontend-isabelgonz91s-projects.vercel.app"
+    "https://llm-fastapi-vercel-frontend.vercel.app"  # Dominio de producción
 ]
 
-# Configuración de CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Usar la lista de orígenes permitidos
+    allow_origins=origins,  # Asegúrate de incluir el dominio correcto aquí
     allow_credentials=True,
-    allow_methods=["*"],  # Permite todos los métodos
-    allow_headers=["*"],  # Permite todos los encabezados
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
 
 
