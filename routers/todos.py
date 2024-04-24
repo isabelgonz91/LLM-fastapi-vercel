@@ -47,3 +47,26 @@ def delete_todo(id: int, db: Session = Depends(get_db)):
     res = crud.delete_todo(db, id)
     if res is None:
         raise HTTPException(status_code=404, detail="to do not found")
+
+# LANGCHAIN
+langchain_llm = OpenAI(temperature=0)
+
+summarize_template_string = """
+        Provide a summary for the following text:
+        {text}
+"""
+
+summarize_prompt = PromptTemplate(
+    template=summarize_template_string,
+    input_variables=['text'],
+)
+
+summarize_chain = LLMChain(
+    llm=langchain_llm,
+    prompt=summarize_prompt,
+)
+
+@router.post('/summarize-text')
+async def summarize_text(text: str):
+    summary = summarize_chain.run(text=text)
+    return {'summary': summary}
