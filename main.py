@@ -19,7 +19,7 @@ app.include_router(todos.router)
 
 origins = [
     "http://localhost:3000",  # URL local para desarrollo
-    "https://llm-fastapi-vercel-frontend-hhqkcajwi-isabelgonz91s-projects.vercel.app",  # URL de producción
+    "https://llm-fastapi-vercel-frontend.vercel.app",  # URL de producción
 ]
 
 # Configuración de CORS
