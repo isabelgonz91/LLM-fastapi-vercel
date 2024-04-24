@@ -4,6 +4,8 @@ from fastapi import APIRouter, Depends, HTTPException, status
 import schemas
 import crud
 from database import SessionLocal
+from langchain import OpenAI, PromptTemplate
+from langchain.chains import LLMChain
 
 router = APIRouter(
     prefix="/todos"
