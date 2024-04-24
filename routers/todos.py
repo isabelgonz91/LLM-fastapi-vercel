@@ -10,13 +10,6 @@ from langchain.chains import LLMChain
 router = APIRouter(
     prefix="/todos"
 )
-@router.get("/favicon.ico")
-def get_favicon():
-    return Response(status_code=status.HTTP_204_NO_CONTENT)
-@router.head("/")
-def head_root():
-    # No necesitas devolver un cuerpo en la respuesta, solo un objeto Response vacío
-    return Response()
 
 def get_db():
     db = SessionLocal()
