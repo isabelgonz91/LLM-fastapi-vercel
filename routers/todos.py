@@ -97,7 +97,7 @@ async def get_todo_by_id(id: int, db: Session = Depends(get_db)):
 # Definir un prompt template para generar posts de Instagram
 instagram_post_template_string = """
     Como un community manager creativo y profesional especializado en Instagram,
-    redacta un post en español que sea atractivo y original, que incluya hashtags basado en este input:
+    redacta un post en español que sea atractivo y original, de mínimo 400 palabras, que incluya hashtags basado en este input:
     {text}
 """
 
